@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fh.shopapi.address.mapper.IAddressMapper">
+	<sql id="addressWhere">
+		<where>
+			<if test="brandName != null and brandName != '' ">
+				brandName like concat('%',#{brandName},'%')
+			</if>
+
+		</where>
+	</sql>
+
+	<!--查询当前用户的地址信息-->
+	<select id="findMemberAddress" parameterType="long" resultType="com.fh.shopapi.address.po.Address">
+		select ta.id,realName,streetFloor,consigneePhone,concat(ta1.cityName,ta2.cityName,ta3.cityName) "areaName",postcode from t_address ta
+					   left join t_area ta1 on ta.area1=ta1.id
+					   left join t_area ta2 on ta.area2=ta2.id
+					   left join t_area ta3 on ta.area3=ta3.id
+		  where memberId = #{memberId}
+	</select>
+	<!--根据id查询地区信息-->
+	<select id="findAddressById" parameterType="String" resultType="com.fh.shopapi.address.po.Address">
+		select ta.id,realName,streetFloor,consigneePhone,concat(ta1.cityName,ta2.cityName,ta3.cityName,streetFloor) "areaName",postcode from t_address ta
+					   left join t_area ta1 on ta.area1=ta1.id
+					   left join t_area ta2 on ta.area2=ta2.id
+					   left join t_area ta3 on ta.area3=ta3.id
+		  where ta.id = #{id}
+	</select>
+	
+</mapper>

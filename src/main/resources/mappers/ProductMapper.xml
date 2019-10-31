@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fh.shopapi.product.mapper.IProductMapper">
+	<!--修改库存-->
+	<update id="updateStock">
+		update t_product set stock = stock-#{count} where id=#{productId} and stock >= #{count};
+	</update>
+
+	<!--查询上架的商品库存-->
+	<select id="selectValidProduct" resultType="com.fh.shopapi.product.po.Product">
+		select id,productName,price,stock from t_product where isValid = 1;
+	</select>
+
+</mapper>
